@@ -19,4 +19,4 @@ v1.0 功能协定
     
     
 # 流程图
-![Image text](https://raw.githubusercontent.com/Hwenze/restaurant-h5/master/readme/handler.png)
+![Image text](https://raw.githubusercontent.com/Hwenze/restaurant-h5/master/readme/handler.png?token=AINQFOLXJSHRQ3A6CDGAFU27VJK46)
