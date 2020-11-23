@@ -5,7 +5,7 @@
  */
 module.exports = app => {
   const { router, controller, middleware } = app;
-  const jwt = middleware.tokenHandler(app.config.jwt);
+  // const jwt = middleware.tokenHandler(app.config.jwt);
   router.get('/api/getAgreement', controller.common.queryuserAgreement);
   router.post('/api/setAgreement',  controller.common.updateuserAgreement);
   // router.post('/api/uploadImage', controller.common.uploadImage);

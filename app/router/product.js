@@ -6,8 +6,8 @@
 module.exports = app => {
   const { router, controller, middleware } = app;
   const jwt = middleware.tokenHandler(app.config.jwt);
-  // router.get('/product/getProductInfo/:id', jwt, controller.product.queryProductInfoById);
-  // router.get('/product/getProductList', jwt, controller.product.queryProductListAdminId);
+  router.get('/product/queryCategoryByAdminId', controller.product.queryCategoryByAdminId);
+  router.get('/product/queryProductInfoById', controller.product.queryProductInfoById);
   // router.post('/product/createOrUpdateProduct', jwt, controller.product.updateOrInsertProduct);
   // router.post('/product/changeProductStatus', jwt, controller.product.changeProductStatus);
   
