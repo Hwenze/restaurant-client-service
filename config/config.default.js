@@ -15,7 +15,7 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1605063566141_1968';
 
-  config.uploadOrgin = 'http://127.0.0.1:8080'
+  config.uploadOrgin = 'http://127.0.0.1:8083'
 
   // 上传地址
   config.uploadUrl = {
@@ -30,7 +30,7 @@ module.exports = appInfo => {
   config.cluster = {
     listen: {
       path: '',
-      port: 8080,
+      port: 8083,
       hostname: 'localhost',
     }
   };
