@@ -35,15 +35,17 @@ class ProductController extends Controller {
     const admin_id = 1;
     // 分类列表
     const categoryList = await ctx.service.product.queryCategoryByAdminId(admin_id);
+    const productList = [];
     // 商品列表
     await Promise.all([
-      ...categoryList.map(async item=>{
+      ...categoryList.map(async item => {
         item.productList = await ctx.service.product.queryProductListByCategoryId(admin_id, item.id);
+        productList.push(...item.productList);
         return item;
       })
     ])
     ctx.body = cb({
-      data: categoryList
+      data: { categoryList, productList }
     });
   }
 }
