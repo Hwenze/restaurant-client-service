@@ -5,11 +5,11 @@ const { cb, filterQuery, createOrderId } = require('../utils/index');
 const { QUERY_TABLES, QUERY_COUNT } = require('../utils/sql');
 
 class OrderController extends Controller {
-  // 根据店铺ID查看订单列表
+  // 根据用户ID查看订单列表
   async queryOrderListByAdminId() {
     const { ctx } = this;
     const isPass = {
-      number: ['status', 'order_id', 'member_id'],
+      number: ['status', 'member_id'],
     };
     let params = filterQuery(ctx.query, isPass);
     const result = await ctx.service.order.queryOrderListByAdminId(params);

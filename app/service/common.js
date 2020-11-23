@@ -28,12 +28,6 @@ class CommonService extends Service {
     return await app.mysql.get('user_agreement', { id });
   }
 
-  // 更改用户协议
-  async updateuserAgreement(agreement) {
-    const { app } = this;
-    return await app.mysql.update('user_agreement', { id: 1, agreement });
-  }
-
   // 获取上传的文件夹名称
   async getUploadFileDirname(stream) {
     const { app, ctx } = this;
@@ -63,30 +57,12 @@ class CommonService extends Service {
   }
 
   // 查询首页轮播
-  async queryHomeRotation() {
+  async queryHomeRotation(column) {
     const { app } = this;
     return await app.mysql.select('home_rotation', {
+      where: { status:1 }, // WHERE 条件
       orders: [['sort', 'desc']], // 排序方式
     });
-  }
-
-  // 启用 or 禁用 首页轮播
-  async changeRotationStatus(id) {
-    const { app } = this;
-    const adopt = await app.mysql.get('home_rotation', id);
-    return await app.mysql.update('home_rotation',{ id: adopt.id, status: adopt.status === 1 ? 0 : 1 });
-  }
-
-  // 获取轮播详情
-  async getRotationDateils(id) {
-    const { app } = this;
-    return await app.mysql.get('home_rotation', id);
-  }
-
-  // 更改轮播详情
-  async updateRotationDateils(column) {
-    const { app } = this;
-    return await app.mysql.update('home_rotation', { ...column });
   }
 
 }
