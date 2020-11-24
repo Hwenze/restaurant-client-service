@@ -18,6 +18,14 @@ class ProductService extends Service {
     return await app.mysql.get('product', { id });
   }
 
+  // 查询商品
+  async queryProductInfoByOrderComfirm(id) {
+    const { app } = this;
+    return await app.mysql.get('product', { id }, {
+      columns: ['id', 'title', 'banner', 'price', 'sub_title']
+    });
+  }
+
   // 根据admin_id查询分类列表
   async queryCategoryByAdminId(admin_id) {
     const { app, ctx } = this;

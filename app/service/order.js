@@ -20,6 +20,29 @@ class OrderService extends Service {
     });
   }
 
+  // 创建订单
+  async insertOrder(option){
+    const { ctx, app } = this;
+    return await app.mysql.insert('order', {
+      ...option
+    });
+  }
+
+  // 创建订单快照
+  async insertOrderSnapshot(order_id,option){
+    const { ctx, app } = this;
+    const params = {
+      total_price:option.price*option.count,
+      product_id:option.id,
+      title:option.title,
+      banner:option.banner,order_id,
+      price:option.price,count:option.count,
+    }
+    return await app.mysql.insert('order_snapshot', {
+      ...params
+    });
+  }
+
   // 获取订单列表
   async queryOrderListByAdminId(option) {
     const { ctx, app } = this;
