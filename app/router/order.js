@@ -6,7 +6,7 @@
 module.exports = app => {
   const { router, controller, middleware } = app;
   const jwt = middleware.tokenHandler(app.config.jwt);
-  router.get('/order/getOrderList', jwt, controller.order.queryOrderListByAdminId);
+  router.get('/order/getOrderList', controller.order.queryOrderListByAdminId);
   router.get('/order/getOrderInfo/:id', controller.order.queryOrderInfoById);
   router.post('/order/confirmOrder', controller.order.confirmOrder);
   router.post('/order/createOrder', controller.order.insertOrder);

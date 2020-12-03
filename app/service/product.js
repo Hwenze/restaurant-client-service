@@ -30,7 +30,7 @@ class ProductService extends Service {
   async queryCategoryByAdminId(admin_id) {
     const { app, ctx } = this;
     return await app.mysql.select('admin_category', {
-      columns: ['id', 'name', 'create_time', 'image',],
+      columns: ['id', 'name', 'create_time', 'image', 'desc'],
       where: { admin_id, status: 1, }, // WHERE 条件
     });
 

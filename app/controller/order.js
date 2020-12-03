@@ -42,13 +42,13 @@ class OrderController extends Controller {
   // 确认订单返回商品
   async confirmOrder() {
     const { ctx } = this;
-    let { table_num, people_num, goods = [] } = ctx.request.body;
-    if (!table_num) {
-      ctx.body = cb({ msg: '桌位号不能为空', code: 1000 });
+    let { shop_id, table_num, goods = [] } = ctx.request.body;
+    if (!shop_id) {
+      ctx.body = cb({ msg: '店铺ID不能为空', code: 1000 });
       return;
     }
-    if (!people_num) {
-      ctx.body = cb({ msg: '就餐人数不能为空', code: 1000 });
+    if (!table_num) {
+      ctx.body = cb({ msg: '桌位号不能为空', code: 1000 });
       return;
     }
     if (goods && goods.length === 0) {
@@ -63,12 +63,21 @@ class OrderController extends Controller {
         return item;
       })
     ])
-    ctx.body = cb({ msg: '查询成功', data: goods });
+    let totalPrice = 0;
+    goods.forEach(item=>{
+      totalPrice += item.count * item.price
+    })
+    ctx.body = cb({ msg: '查询成功', data: {shop: {id: 1, name: '7分甜（湛江徐闻徐城镇店）'}, list: goods, totalPrice: totalPrice} });
   }
+
   // 创建订单
   async insertOrder() {
     const { ctx } = this;
-    let { table_num, people_num, goods = [], remark = '' } = ctx.request.body;
+    let { shop_id, table_num, people_num, goods = [], remark = '' } = ctx.request.body;
+    if (!shop_id) {
+      ctx.body = cb({ msg: '店铺ID不能为空', code: 1000 });
+      return;
+    }
     if (!table_num) {
       ctx.body = cb({ msg: '桌位号不能为空', code: 1000 });
       return;
@@ -117,6 +126,7 @@ class OrderController extends Controller {
 
   }
 
+  // 订单详情
   async queryOrderInfoById() {
     const { ctx } = this;
     let { id } = ctx.params;

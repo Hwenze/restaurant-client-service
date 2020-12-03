@@ -47,7 +47,8 @@ class OrderService extends Service {
   async queryOrderListByAdminId(option) {
     const { ctx, app } = this;
     const { page, column } = option;
-    const { admin_id = '' } = await ctx.service.common.getUserInfo();
+    // const { admin_id = '' } = await ctx.service.common.getUserInfo();
+    const admin_id = 1;
     // 该返回的字段
     const orderColumn = ['id', 'order_id', 'total_price', 'create_time', 'status', 'table_num', 'people_num'];
     const orderListResult = await app.mysql.query(QUERY_TABLES(
