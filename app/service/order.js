@@ -21,7 +21,7 @@ class OrderService extends Service {
   }
 
   // 创建订单
-  async insertOrder(option){
+  async insertOrder(option) {
     const { ctx, app } = this;
     return await app.mysql.insert('order', {
       ...option
@@ -29,14 +29,14 @@ class OrderService extends Service {
   }
 
   // 创建订单快照
-  async insertOrderSnapshot(order_id,option){
+  async insertOrderSnapshot(order_id, option) {
     const { ctx, app } = this;
     const params = {
-      total_price:option.price*option.count,
-      product_id:option.id,
-      title:option.title,
-      banner:option.banner,order_id,
-      price:option.price,count:option.count,
+      total_price: option.price * option.count,
+      product_id: option.id,
+      title: option.title,
+      banner: option.banner, order_id,
+      price: option.price, count: option.count,
     }
     return await app.mysql.insert('order_snapshot', {
       ...params
@@ -56,12 +56,18 @@ class OrderService extends Service {
         {
           table: 'order',
           column: orderColumn,
-          where: { admin_id, ...column }
+          where: { admin_id, ...column },
+          sort: 'create_time'
         },
         {
           table: 'member',
           column: ['id as member_id', 'nickname'],
           where: '`order`.member_id = `member`.id'
+        },
+        {
+          table: 'admin_info',
+          column: ['id as shop_id', 'shop_name', 'shop_avatar'],
+          where: '`order`.shop_id = `admin_info`.id'
         }
       ], page
     ));

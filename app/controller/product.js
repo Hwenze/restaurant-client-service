@@ -4,6 +4,7 @@ const Controller = require('egg').Controller;
 const { cb, filterQuery } = require('../utils/index');
 
 class ProductController extends Controller {
+  
   // 根据商品id查询商品信息
   async queryProductInfoById() {
     const { ctx } = this;
@@ -31,10 +32,16 @@ class ProductController extends Controller {
   // 根据admin_id查询分类列表
   async queryCategoryByAdminId() {
     const { ctx } = this;
+    let { shop_id } = ctx.query;
+    if (!shop_id) {
+      ctx.body = cb({ msg: '参数错误', code: 1000 });
+      return;
+    }
     // 获取商品分类列表
     const admin_id = 1;
     // 分类列表
     const categoryList = await ctx.service.product.queryCategoryByAdminId(admin_id);
+    const shopInfo = await ctx.service.product.queryshopId(shop_id);
     const productList = [];
     // 商品列表
     await Promise.all([
@@ -45,7 +52,7 @@ class ProductController extends Controller {
       })
     ])
     ctx.body = cb({
-      data: { categoryList, productList }
+      data: { shopInfo: shopInfo[0], categoryList, productList }
     });
   }
 }

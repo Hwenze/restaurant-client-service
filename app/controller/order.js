@@ -5,6 +5,7 @@ const { cb, filterQuery, createOrderId } = require('../utils/index');
 const { QUERY_TABLES, QUERY_COUNT } = require('../utils/sql');
 
 class OrderController extends Controller {
+
   // 根据用户ID查看订单列表
   async queryOrderListByAdminId() {
     const { ctx } = this;
@@ -55,6 +56,10 @@ class OrderController extends Controller {
       ctx.body = cb({ msg: '还没有点菜', code: 1000 });
       return;
     }
+
+    // 查询店铺信息
+    const shopInfo = await ctx.service.product.queryshopId(shop_id);
+
     // 查询菜品的价格
     goods = await Promise.all([
       ...goods.map(async item => {
@@ -64,10 +69,10 @@ class OrderController extends Controller {
       })
     ])
     let totalPrice = 0;
-    goods.forEach(item=>{
+    goods.forEach(item => {
       totalPrice += item.count * item.price
     })
-    ctx.body = cb({ msg: '查询成功', data: {shop: {id: 1, name: '7分甜（湛江徐闻徐城镇店）'}, list: goods, totalPrice: totalPrice} });
+    ctx.body = cb({ msg: '查询成功', data: { shop: shopInfo[0], list: goods, totalPrice: totalPrice } });
   }
 
   // 创建订单
@@ -103,10 +108,10 @@ class OrderController extends Controller {
         return item;
       })
     ])
-    total_price+=product_price;
+    total_price += product_price;
     const order_id = createOrderId(admin_id);
     const resultParams = {
-      total_price:total_price,product_price, tea_price, people_num, remark, table_num,
+      total_price: total_price, shop_id, product_price, tea_price, people_num, remark, table_num,
       // 是否有优惠券 拟定没有
       real_price: total_price, order_id,
       // 暂时拟定
@@ -136,8 +141,11 @@ class OrderController extends Controller {
       return;
     }
     let orderInfo = await ctx.service.order.queryOrderInfoById(id);
+    let shopInfo = await ctx.service.product.queryshopId(orderInfo.shop_id);
     if (orderInfo && orderInfo.id) {
       orderInfo.snapshotInfo = await ctx.service.order.queryOrderSnapshotById(orderInfo.id);
+      orderInfo.shop_name = shopInfo[0].shop_name;
+      orderInfo.shop_avatar = shopInfo[0].shop_avatar;
       ctx.body = cb({ data: orderInfo });
       return;
     } else {

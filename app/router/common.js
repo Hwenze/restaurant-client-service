@@ -9,5 +9,7 @@ module.exports = app => {
   router.get('/api/getAgreement', controller.common.queryuserAgreement);
   // router.post('/api/uploadImage', controller.common.uploadImage);
   router.get('/api/getHomeRotation', controller.common.queryHomeRotation);
+  router.get('/api/getHomeShop', controller.common.queryHomeShop);
+  router.get('/api/getShopList', controller.common.queryShopList);
 };
 

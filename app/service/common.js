@@ -44,25 +44,55 @@ class CommonService extends Service {
     const filename = (new Date().getTime() + Math.random().toString(36).substr(4) + path.extname(stream.filename).toLocaleLowerCase());
     // const resultPath = path.join(rootPath, day);
     // 测试地址
-    const resultPath = path.join(__dirname,'../public/')+day;
+    const resultPath = path.join(__dirname, '../public/') + day;
     // 检查是否存在文件夹 不存在就新建
     await mkdir(resultPath);
     // 系统路径
     const systemPath = path.join(resultPath, filename);
     return {
-      image:`/${day}/${filename}`,
+      image: `/${day}/${filename}`,
       systemPath,
       imageUrl: ctx.origin + systemPath.slice(3).replace(/\\/g, '/'),
     };
   }
 
   // 查询首页轮播
-  async queryHomeRotation(column) {
+  async queryHomeRotation() {
     const { app } = this;
     return await app.mysql.select('home_rotation', {
-      where: { status:1 }, // WHERE 条件
+      where: { status: 1 }, // WHERE 条件
       orders: [['sort', 'desc']], // 排序方式
     });
+  }
+
+  // 查询首页热门店铺
+  async queryHomeShop() {
+    const { app } = this;
+    return await app.mysql.select('admin_info', {
+      where: { shop_status: 1 }, // WHERE 条件
+      orders: [['sort', 'desc']], // 排序方式
+    });
+  }
+
+  // 查询店铺列表
+  async queryShopList(option) {
+    const { ctx, app } = this;
+    const { page = {}, column = {} } = option;
+    const { pageSize = 10, current = 0 } = page;
+    const result = await app.mysql.select('admin_info', {
+      where: { ...column }, // WHERE 条件
+      orders: [['sort', 'desc']], // 排序方式
+      limit: pageSize,
+      offset: current * pageSize, // 数据偏移量
+    });
+    const total = await app.mysql.count('admin_info', { ...column });
+
+    return {
+      list: result,
+      total: total || 0,
+      current,
+      pageSize
+    };
   }
 
 }

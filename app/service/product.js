@@ -33,7 +33,14 @@ class ProductService extends Service {
       columns: ['id', 'name', 'create_time', 'image', 'desc'],
       where: { admin_id, status: 1, }, // WHERE 条件
     });
+  }
 
+  // 根据admin_id查询分类列表
+  async queryshopId(shop_id) {
+    const { app, ctx } = this;
+    return await app.mysql.select('admin_info', {
+      where: { id: shop_id, shop_status: 1 }, // WHERE 条件
+    });
   }
 
   // 更新商品

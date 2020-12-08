@@ -69,6 +69,37 @@ class CommonController extends Controller {
         }
     }
 
+    // 查询首页热门店铺
+    async queryHomeShop() {
+        const { ctx } = this;
+        const result = await ctx.service.common.queryHomeShop();
+        if (result) {
+            ctx.body = cb({ data: result });
+            return;
+        } else {
+            ctx.body = cb({ code: 500 });
+            return;
+        }
+    }
+
+    // 查询店铺列表
+    async queryShopList() {
+        const { ctx } = this;
+        const isPass = {
+            string: ['shop_name']
+        };
+        let params = filterQuery(ctx.query, isPass);
+        console.log(params)
+        const result = await ctx.service.common.queryShopList(params);
+        if (result) {
+            ctx.body = cb({ data: result });
+            return;
+        } else {
+            ctx.body = cb({ code: 500 });
+            return;
+        }
+    }
+
 }
 
 module.exports = CommonController;

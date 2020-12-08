@@ -19,8 +19,6 @@ class UserController extends Controller {
     }
   }
 
-
-
   // 冻结 or 解冻用户
   async changeUserStatus() {
     const { ctx } = this;
@@ -46,8 +44,6 @@ class UserController extends Controller {
       ctx.body = cb({ code: 500, msg: '用户不存在' });
     }
   }
-
-
 
   // 删除用户
   async deleteUserById() {
